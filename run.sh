@@ -39,6 +39,9 @@ fi
 # Increase the allowed header size, the default (102400) is quite smallish
 postconf -e header_size_limit=4096000
 
+# max message size: 40MB
+postconf -e message_size_limit=40960000
+
 # Restriction lists
 postconf -e smtpd_client_restrictions=
 postconf -e smtpd_sender_restrictions=
@@ -46,6 +49,11 @@ postconf -e smtpd_helo_required=yes
 postconf -e smtpd_helo_restrictions=permit_mynetworks,reject_invalid_helo_hostname,reject_non_fqdn_helo_hostname,reject_unknown_helo_hostname
 postconf -e smtpd_recipient_restrictions=
 postconf -e smtpd_relay_restrictions=permit_mynetworks,reject_unauth_destination
+
+# deferred max waiting time
+postconf -e maximal_queue_lifetime=7d
+postconf -e bounce_queue_lifetime=7d
+
 
 echo -e "‣ Starting: rsyslog, postfix"
 exec supervisord -c /etc/supervisord.conf
