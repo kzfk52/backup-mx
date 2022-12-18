@@ -1,0 +1,18 @@
+volumes:
+  spool:
+
+services:
+  backup-mx:
+    restart: always
+    image: backup-mx
+    container_name: backup-mx
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      HOSTNAME: "${MX_HOSTNAME}"
+      DOMAINS: "${DOMAINS_COMMA}"
+      TZ: 'Asia/Tokyo'
+
+    volumes:
+      - spool:/var/spool/potfix:rw
